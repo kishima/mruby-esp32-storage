@@ -5,7 +5,7 @@ void mrb_storage_user_interrupt_suspend()
 
 }
 
-void mrb_storage_user_interrupt_enable()
+void mrb_storage_user_interrupt_enbale()
 {
 
 }

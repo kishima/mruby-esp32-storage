@@ -1,6 +1,7 @@
 #include <mruby.h>
 #include <mruby/value.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "diskio.h"
 #include "ff.h"
@@ -18,11 +19,6 @@ void (*enable_interrupts)(void) = NULL;
 
 static int spiffs_mounted = 0;
 static char spiffs_mount_path[16];
-
-mrb_value mrb_esp32_storage_umount_spiffs(mrb_state *mrb, mrb_value self)
-{
-
-}
 
 mrb_value mrb_esp32_storage_mount_spiffs(mrb_state *mrb, mrb_value self)
 {
@@ -63,16 +59,27 @@ mrb_value mrb_esp32_storage_mount_spiffs(mrb_state *mrb, mrb_value self)
   return self;
 }
 
+mrb_value mrb_esp32_storage_umount_spiffs(mrb_state *mrb, mrb_value self)
+{
+  return self;
+}
+
+
+
 void
-mrb_mruby_esp32_system_gem_init(mrb_state* mrb) {
+mrb_mruby_esp32_storage_gem_init(mrb_state* mrb) {
   struct RClass *esp32_module = mrb_define_module(mrb, "ESP32");
 
+  //Storage module
   struct RClass *esp32_storage_module = mrb_define_module_under(mrb, esp32_module, "Storage");
 
-  mrb_define_module_function(mrb, esp32_storage_module, "mound", mrb_esp32_storage_mount_spiffs, MRB_ARGS_ARG(1,2));
-  mrb_define_module_function(mrb, esp32_storage_module, "umound", mrb_esp32_storage_umount_spiffs, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, esp32_storage_module, "mount_spiffs", mrb_esp32_storage_mount_spiffs, MRB_ARGS_ARG(1,2));
+  mrb_define_module_function(mrb, esp32_storage_module, "umount_spiffs", mrb_esp32_storage_umount_spiffs, MRB_ARGS_NONE());
+
+  //FILE class
+
 }
 
 void
-mrb_mruby_esp32_system_gem_final(mrb_state* mrb) {
+mrb_mruby_esp32_storage_gem_final(mrb_state* mrb) {
 }
